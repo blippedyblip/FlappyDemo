@@ -17,6 +17,7 @@ public class MenuState extends State
     public MenuState(GameStateManager gameStateManager)
     {
         super(gameStateManager);
+        cam.setToOrtho(false, FlappyDemo.WIDTH / 2, FlappyDemo.HEIGHT / 2);
         background = new Texture("bg.png");
         playBtn = new Texture("playBtn.png");
     }
@@ -27,7 +28,6 @@ public class MenuState extends State
         if(Gdx.input.justTouched())
         {
             gameStateManager.set(new PlayState(gameStateManager));
-            dispose();
         }
     }
 
@@ -40,9 +40,10 @@ public class MenuState extends State
     @Override
     public void render(SpriteBatch spriteBatch)
     {
+        spriteBatch.setProjectionMatrix(cam.combined);
         spriteBatch.begin();
-        spriteBatch.draw(background,0,0, FlappyDemo.WIDTH,FlappyDemo.HEIGHT);
-        spriteBatch.draw(playBtn,(FlappyDemo.WIDTH/2) - (playBtn.getWidth()/2),FlappyDemo.HEIGHT/2);
+        spriteBatch.draw(background,0,0);
+        spriteBatch.draw(playBtn,cam.position.x - (playBtn.getWidth()/2),cam.position.y);
         spriteBatch.end();
     }
 
@@ -51,5 +52,6 @@ public class MenuState extends State
     {
         background.dispose();
         playBtn.dispose();
+        System.out.println("Menu state disposed");
     }
 }
